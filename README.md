@@ -32,17 +32,77 @@ This project classifies handwritten digits (0–9) from the [MNIST dataset](http
 
 | Step | Notebook | Key Change | Test Accuracy |
 |------|----------|-----------|---------------|
-| **Step 1** — Baseline SimpleCNN | [`step1_simpleCNN.ipynb`](step1_simpleCNN.ipynb) | Conv×2 + FC×2 + Dropout | **98.68 %** |
-| Step 2 | *(coming soon)* | — | — |
-| Step 3 | *(coming soon)* | — | — |
+| **Step 0** — Linear Baseline | [`step0_linear_without_hidden copy.ipynb`](step0_linear_without_hidden%20copy.ipynb) | Single linear layer | **91.49 %** |
+| **Step 1** — MLP Baseline | [`step1_linear_MLP.ipynb`](step1_linear_MLP.ipynb) | MLP with hidden layers | **96.14 %** |
+| **Step 2** — Simple CNN | [`step2_simpleCNN.ipynb`](step2_simpleCNN.ipynb) | Convolutional layers | **98.60 %** |
 
 ---
 
-## Step 1 — Baseline SimpleCNN
+## Step 0 — Linear Baseline
 
-> **Notebook:** [`step1_simpleCNN.ipynb`](step1_simpleCNN.ipynb)
+> **Notebook:** [`step0_linear_without_hidden copy.ipynb`](step0_linear_without_hidden%20copy.ipynb)
 
-A minimal two-conv-layer CNN trained with standard hyperparameters to establish a reliable baseline.
+A simple linear classifier without any hidden layers, serving as the baseline for comparison.
+
+### Architecture
+
+```
+SimpleMLP
+└── Linear(784 → 10)  [logits]
+```
+
+**Hyperparameters**
+
+| Parameter | Value |
+|---|---|
+| Optimiser | Adam |
+| Learning rate | 1e-3 |
+| Batch size | 32 |
+| Epochs | 1 |
+| Dropout | N/A |
+
+### Test Results
+
+| Metric | Value |
+|---|---|
+| Test Loss | **0.2912** |
+| Test Accuracy | **91.49 %** |
+
+## Step 1 — MLP Baseline
+
+> **Notebook:** [`step1_linear_MLP.ipynb`](step1_linear_MLP.ipynb)
+
+A multi-layer perceptron with a single hidden layer to improve upon the linear baseline.
+
+### Architecture
+
+```
+SimpleMLP
+└── Linear(784 → 10)  [logits]
+```
+
+**Hyperparameters**
+
+| Parameter | Value |
+|---|---|
+| Optimiser | Adam |
+| Learning rate | 1e-3 |
+| Batch size | 32 |
+| Epochs | 1 |
+| Dropout | N/A |
+
+### Test Results
+
+| Metric | Value |
+|---|---|
+| Test Loss | **0.1186** |
+| Test Accuracy | **96.14 %** |
+
+## Step 2 — Simple CNN
+
+> **Notebook:** [`step2_simpleCNN.ipynb`](step2_simpleCNN.ipynb)
+
+A simple convolutional neural network with two convolutional layers followed by fully connected layers.
 
 ### Architecture
 
@@ -50,7 +110,7 @@ A minimal two-conv-layer CNN trained with standard hyperparameters to establish 
 SimpleCNN
 ├── Conv2d(1 → 10, kernel=5)  + ReLU + MaxPool2d(2)
 ├── Conv2d(10 → 20, kernel=5) + ReLU + MaxPool2d(2)
-├── Flatten → Linear(320 → 50) + ReLU + Dropout(0.2)
+├── Flatten → Linear(320 → 50) + ReLU
 └── Linear(50 → 10)           [logits]
 ```
 
@@ -62,42 +122,24 @@ SimpleCNN
 | Learning rate | 1e-3 |
 | Batch size | 128 |
 | Epochs | 5 (early stop patience=2) |
-| Dropout | 0.2 |
+| Dropout | N/A |
 
 ### Training History
 
 | Epoch | Train Loss | Train Acc | Val Loss | Val Acc |
 |-------|-----------|-----------|----------|---------|
-| 01 | 0.3874 | 88.00 % | 0.1031 | 97.13 % |
-| 02 | 0.1098 | 96.73 % | 0.0715 | 97.82 % |
-| 03 | 0.0816 | 97.46 % | 0.0640 | 98.03 % |
-| 04 | 0.0655 | 97.94 % | 0.0532 | 98.23 % |
-| 05 | 0.0577 | 98.31 % | 0.0520 | **98.38 %** |
+| 01 | 0.4070 | 88.12 % | 0.1306 | 96.15 % |
+| 02 | 0.1072 | 96.65 % | 0.0881 | 97.37 % |
+| 03 | 0.0766 | 97.61 % | 0.0757 | 97.67 % |
+| 04 | 0.0615 | 98.07 % | 0.0635 | 98.05 % |
+| 05 | 0.0510 | 98.46 % | 0.0557 | **98.25 %** |
 
 ### Test Results
 
 | Metric | Value |
 |---|---|
-| Test Loss | **0.0433** |
-| Test Accuracy | **98.68 %** |
-
-### Classification Report
-
-```
-              precision    recall  f1-score   support
-
-           0     0.9809    0.9949    0.9878       980
-           1     0.9930    0.9947    0.9938      1135
-           2     0.9771    0.9922    0.9846      1032
-           3     0.9910    0.9822    0.9866      1010
-           4     0.9908    0.9868    0.9888       982
-           5     0.9910    0.9843    0.9876       892
-           6     0.9947    0.9864    0.9906       958
-           7     0.9733    0.9922    0.9827      1028
-           8     0.9917    0.9784    0.9850       974
-           9     0.9860    0.9742    0.9801      1009
-
-    accuracy                         0.9868     10000
+| Test Loss | **0.0425** |
+| Test Accuracy | **98.60 %** |
 ```
 
 ---
